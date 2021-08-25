@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id 'io.freefair.lombok' version '5.1.1'
+    id 'com.github.johnrengelman.shadow' version '2.0.4'
+}
+
+group 'org.emp'
+version '1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile group: 'com.beust', name: 'jcommander', version: '1.71'
+    compile group: 'org.apache.commons', name: 'commons-math3', version: '3.0'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.3'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.3'
+
+    testCompile "org.mockito:mockito-core:2.+"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
+    testImplementation "com.google.truth:truth:1.0.1"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.6.2"
+    implementation "org.nd4j:nd4j-native-platform:1.0.0-beta6"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaExec) {
+    systemProperty "java.library.path", "build/src/main/cpp"
+}
+
+tasks.withType(Test) {
+    systemProperty 'java.library.path', 'build/src/main/cpp'
+}
+
+shadowJar {
+    zip64 true
+}
